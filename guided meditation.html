@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guided Meditation Exercise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <main class="content">
+            <h1>15-Minute Guided Meditation Session</h1>
+            <div id="exercise-container">
+                <p id="instruction">Prepare to begin...</p>
+                <div id="timer">15:00</div>
+                <button id="start-btn">Start Exercise</button>
+            </div>
+        </main>
+    </div>
+    <script>
+        const instructions = [
+            "Find a comfortable position and close your eyes.",
+            "Take a deep breath in... and out...",
+            "Notice your breath without changing it.",
+            "If your mind wanders, gently bring it back to your breath.",
+            "Observe any thoughts or feelings without judgment.",
+            "Feel the weight of your body against the surface.",
+            "Scan your body for any areas of tension and relax them.",
+            "Imagine a peaceful place. Engage all your senses.",
+            "Bring your attention back to your breath.",
+            "Slowly start to become aware of your surroundings.",
+            "When you're ready, open your eyes."
+        ];
+        let currentStep = 0;
+        let timeLeft = 900; // 15 minutes in seconds
+        let intervalId;
+
+        document.getElementById('start-btn').addEventListener('click', startExercise);
+
+        function startExercise() {
+            document.getElementById('start-btn').style.display = 'none';
+            updateInstruction();
+            intervalId = setInterval(updateTimer, 1000);
+        }
+
+        function updateInstruction() {
+            document.getElementById('instruction').textContent = instructions[currentStep];
+            currentStep = (currentStep + 1) % instructions.length;
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            if (timeLeft % 82 === 0) { // Change instruction approximately every 82 seconds
+                updateInstruction();
+            }
+
+            if (timeLeft === 0) {
+                clearInterval(intervalId);
+                document.getElementById('instruction').textContent = "Meditation complete!";
+                document.getElementById('start-btn').style.display = 'block';
+                document.getElementById('start-btn').textContent = 'Restart Meditation';
+            }
+        }
+    </script>
+</body>
+</html>

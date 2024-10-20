@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Scan Exercise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <main class="content">
+            <h1>10-Minute Body Scan Exercise</h1>
+            <div id="exercise-container">
+                <p id="instruction">Prepare to begin...</p>
+                <div id="timer">10:00</div>
+                <button id="start-btn">Start Exercise</button>
+            </div>
+        </main>
+    </div>
+    <script>
+        const instructions = [
+            "Focus on your feet and toes. Notice any sensations.",
+            "Move your attention to your legs. Feel their weight.",
+            "Bring awareness to your hips and lower back.",
+            "Notice your abdomen and chest. Feel your breath.",
+            "Focus on your hands and arms. Observe any tension.",
+            "Bring attention to your shoulders and neck.",
+            "Notice your face and head. Relax any tension.",
+            "Be aware of your whole body. Feel the sensations."
+        ];
+        let currentStep = 0;
+        let timeLeft = 600; // 10 minutes in seconds
+        let intervalId;
+
+        document.getElementById('start-btn').addEventListener('click', startExercise);
+
+        function startExercise() {
+            document.getElementById('start-btn').style.display = 'none';
+            updateInstruction();
+            intervalId = setInterval(updateTimer, 1000);
+        }
+
+        function updateInstruction() {
+            document.getElementById('instruction').textContent = instructions[currentStep];
+            currentStep = (currentStep + 1) % instructions.length;
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            if (timeLeft % 75 === 0) { // Change instruction every 75 seconds
+                updateInstruction();
+            }
+
+            if (timeLeft === 0) {
+                clearInterval(intervalId);
+                document.getElementById('instruction').textContent = "Exercise complete!";
+                document.getElementById('start-btn').style.display = 'block';
+                document.getElementById('start-btn').textContent = 'Restart Exercise';
+            }
+        }
+    </script>
+</body>
+</html>
